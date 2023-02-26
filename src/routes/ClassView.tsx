@@ -205,7 +205,7 @@ export default function ClassView(){
             }} aria-label="Please choose a quiz">
                 {
                     quizzes.map((el,index)=>{
-                        return (<option value={index+""}>{el}</option>)
+                        return (<option value={el}>{el}</option>)
                     })
                 }
             </Form.Select>
