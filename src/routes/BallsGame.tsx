@@ -51,11 +51,7 @@ export default function FishingGame(){
         ctx.font = "40px Verdana";
         ctx.fillText(questionList[0], 136, 140);
         ctx.textAlign = "start";
-
-
-
     }
-
 
     //Loop
     //Make sure the image is loaded first otherwise nothing will draw.
@@ -186,7 +182,7 @@ export default function FishingGame(){
     
     let myImgPos = {
         x: 0,
-        y: 600,
+        y: canvas.height - canvas.height/3.5,
         width: 200,
         height:200
 
@@ -198,23 +194,23 @@ export default function FishingGame(){
     
 
     function moveMyImgLeft() {
-        myImgPos.x -= 20;
+        myImgPos.x -= 25;
 
     }
 
     function moveMyImgRight() {
-        myImgPos.x += 20;
+        myImgPos.x += 25;
 
     }
 
     document.addEventListener('keydown', function(e) {
         switch (e.key){
             case 'ArrowLeft' :
-                if(myImgPos.x - 20 < 0) break;
+                if(myImgPos.x - 25 < 0) break;
                 moveMyImgLeft();
                 break;
             case 'ArrowRight' :
-                if(myImgPos.x + 20 > 1285) break;
+                if(myImgPos.x + 25 > canvas.width - canvas.width/10) break;
                 moveMyImgRight();
                 break;
         }
@@ -231,10 +227,10 @@ export default function FishingGame(){
 
 
     function fallItem() {
-        onePos.y += 3;
-        twoPos.y += 3 ;
-        threePos.y += 3;
-        fourPos.y += 3;
+        onePos.y += 2;
+        twoPos.y += 2 ;
+        threePos.y += 2;
+        fourPos.y += 2;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         scaleToFill(background);
         ctx.drawImage(one,onePos.x,onePos.y,onePos.width,onePos.height);
