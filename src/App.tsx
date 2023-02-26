@@ -13,11 +13,11 @@ function App() {
     <div className="App">
       <div className='App-header'>
         <Roll>
-            <h1>Project Name</h1>
+            <h1>Arcade Academy</h1>
           </Roll>
           <LightSpeed>
           <p>
-            Gamify homework or in-class assignments and encourage students to learn in a competitve but friendly environment.
+            Gamify homework or in-class assignments and encourage students to learn in a competitive but friendly environment.
           </p>
           </LightSpeed>
           <p>I am a...</p>
