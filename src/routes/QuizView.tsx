@@ -253,7 +253,7 @@ export default function QuizView(){
                 {
                     quizQuestions!=null?Object.entries(quizQuestions).map(list=>{
                         let key=list[0]
-                        return (<tr>
+                        return (<tr key={Math.random()*1000}>
                             <td>
                                 {key}
                             </td>

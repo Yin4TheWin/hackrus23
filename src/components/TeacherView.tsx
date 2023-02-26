@@ -173,7 +173,7 @@ function generateModal(header: SetStateAction<string>, body: SetStateAction<stri
                 {
                     !(userData==null||userData[radioValue]==null)?Object.entries(userData?userData[radioValue]:{}).map(list=>{
                         let key=list[0]
-                        return (<tr>
+                        return (<tr key={Math.random()*1000}>
                             <td>
                                 <Link to={"/"+user?.uid+"/"+radioValue+"/"+key}>{key}</Link>
                             </td>

@@ -9,10 +9,11 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, se
 import ModalPopup from "../components/Modal";
 
 import '../styles/login.css'
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 import TeacherView from "../components/TeacherView";
 import StudentView from "../components/StudentView";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default function Login(){
     const data = useLoaderData() as String;
@@ -29,7 +30,7 @@ export default function Login(){
     const [generalModalHeader, setModalHeader] = useState("")
 
     const [auth] = useState(getAuth(firebase));
-    // const [db] = useState(getDatabase(firebase)); 
+    const [db] = useState(getDatabase(firebase)); 
 
     const [displayName, setDisplayName] = useState("")
 
@@ -73,14 +74,16 @@ export default function Login(){
                         createUserWithEmailAndPassword(auth, email, password)
                         .then((userCredential) => {
                             const user=userCredential.user;
-                            updateProfile(user, {
-                                displayName: username+" "+data
-                            }).then(()=>{
-                                setDisplayName(username+" "+data)
-                                // set(ref(db, 'users/'+user.uid+'/type'), data)
-                            }).catch((error) => {
-                                const errorMessage = error.message;
-                                console.log(errorMessage)
+                            set(ref(db, "uids/"+user.email?.replaceAll(".","%2E")), user.uid).then(()=>{
+                                updateProfile(user, {
+                                    displayName: username+" "+data
+                                }).then(()=>{
+                                    setDisplayName(username+" "+data)
+                                    // set(ref(db, 'users/'+user.uid+'/type'), data)
+                                }).catch((error) => {
+                                    const errorMessage = error.message;
+                                    console.log(errorMessage)
+                                })
                             })
                         })
                         .catch((error) => {
@@ -156,7 +159,8 @@ export default function Login(){
             }/>
             <h1>{data+" "+(loginState?"Log In":"Sign Up")}</h1>
             <p style={{textAlign:'center'}}>{loginState?"Don't have an account?":"Already have an account?"} <button className="link" onClick={() =>{ 
-                toggleLoginState(!loginState) }}>Click here</button> to {loginState?"sign up":"log in"}</p>  
+                toggleLoginState(!loginState) }}>Click here</button> to {loginState?"sign up":"log in"}</p> 
+                <Link to="/" style={{ color: 'black', fontSize: '20px'}} >(Or click here to go home)</Link>
             <Form onSubmit={(e)=>{
                     e.preventDefault()
                     handleAuthentication()  
