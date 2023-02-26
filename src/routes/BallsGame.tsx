@@ -1,10 +1,13 @@
 //@ts-nocheck
 import { get, ref, getDatabase } from 'firebase/database';
-import { useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { useLocation } from 'react-router-dom';
 import {firebase} from '../firebase'
-
+import ModalPopup from "../components/Modal";
+import Button from 'react-bootstrap/Button';
+import {Link} from 'react-router-dom'
 import '../style.css';
+
 
 export default function FishingGame(){
     const db=getDatabase(firebase)
@@ -13,6 +16,11 @@ export default function FishingGame(){
     const className=decodeURI(location[4])
     const quizName=decodeURI(location[5])
 
+    const [showGeneralModal, toggleGeneralModal] = useState(false);
+    const [showGameOverModal, toggleGameOverModal] = useState(false);
+    const [generalModalText, setModalText] = useState("")
+    const [generalModalHeader, setModalHeader] = useState("")
+
     useEffect(() => {
         get(ref(db, "users/"+uid+"/classes/"+className)).then(teacherUID=>{
             get(ref(db, "users/"+teacherUID.val()+"/quiz/"+quizName+"/questions")).then(questionRef=>{
@@ -20,15 +28,15 @@ export default function FishingGame(){
                 if(questionRef.exists()){
                     questions=questionRef.val()
                 }
-    const canvas = document.querySelector("#canvas");
+    const canvas = document.querySelector("#canvas1");
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth - 10;
-    canvas.height = window.innerHeight - 10;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     let background = new Image();
     background.src = require("./upload/background1.png");
-
+    
     function scaleToFill(img){
         // get the scale
         let scale = Math.max(canvas.width / img.width, canvas.height / img.height);
@@ -44,11 +52,19 @@ export default function FishingGame(){
         ctx.fillText(questionList[0], 136, 140);
         ctx.textAlign = "start";
 
+
+
     }
+
+
+    //Loop
     //Make sure the image is loaded first otherwise nothing will draw.
     background.onload = function(){
         scaleToFill(this);
     }
+
+
+
     //Objects of food 
     let one = new Image();
     one.src = require("./upload/i1.png");
@@ -119,21 +135,21 @@ export default function FishingGame(){
         if(questionList[0]){
            
             onePos.x = Math.floor(Math.random() * Math.floor(canvas.width/100))*100;
-            onePos.y = 0;
+            onePos.y =  Math.floor(Math.random() * Math.floor(canvas.width/4)) -50;
             
             let numTwo = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
             while(numTwo == onePos.x){
                 numTwo = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
             }
             twoPos.x = numTwo;
-            twoPos.y = 0;
+            twoPos.y = Math.floor(Math.random() * Math.floor(canvas.width/4)) -50;
         
             let numThree = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
             while(numThree == onePos.x || numThree == twoPos.x){
                 numThree = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
             }
             threePos.x = numThree;
-            threePos.y = 0;
+            threePos.y = Math.floor(Math.random() * Math.floor(canvas.width/4)) -50;
     
         
             let numFour = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
@@ -141,7 +157,7 @@ export default function FishingGame(){
                 numFour = Math.floor(Math.random() * Math.floor(canvas.width/100))*100; 
             }
             fourPos.x = numFour;
-            fourPos.y = 0; 
+            fourPos.y = Math.floor(Math.random() * Math.floor(canvas.width/4)) -50;
 
             let answerList = (Object.keys(questions[questionList[0]]));
             onePos.correctAns = questions[questionList[0]][answerList[0]];
@@ -158,6 +174,8 @@ export default function FishingGame(){
             console.log("game over");
             ctx.clearRect(0,0,canvas.width,canvas.height);
             clearInterval(timer);
+            toggleGameOverModal(true);
+
         }
     }
     populateObjects();
@@ -211,9 +229,10 @@ export default function FishingGame(){
 
     //ENDS HERE__________________________________________________
 
+
     function fallItem() {
         onePos.y += 3;
-        twoPos.y += 3;
+        twoPos.y += 3 ;
         threePos.y += 3;
         fourPos.y += 3;
         ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -282,8 +301,9 @@ export default function FishingGame(){
             }   
         }
 
-        if(onePos.y == 780){
-            alert("You SUCK U MISSED");
+
+        if(Math.min(onePos.y,twoPos.y,threePos.y,fourPos.y) > 780){
+            alert("You missed try again!");
             populateObjects();
         }
 
@@ -298,6 +318,27 @@ export default function FishingGame(){
     }})})
 },[]);
 
+return(  <div>
+    <ModalPopup showModal={showGeneralModal} toggleModal={()=>{toggleGeneralModal(!showGeneralModal)}}
+    header={generalModalHeader} 
+    body={<div>
+        <p>{generalModalText}</p>
+    </div>
+    }
+    footer={<div>
+        <Button color="primary" onClick={()=>{toggleGeneralModal(!showGeneralModal)}}>OK</Button>
+    </div>
+    }/>
+    <ModalPopup showModal={showGameOverModal} toggleModal={()=>{toggleGameOverModal(!showGameOverModal)}}
+    header={"Game Over!"}
+    body={<div>
+        <p>Great Job, You Have Finished the Quiz!</p></div>}
+    footer = {<div>
+        <Button color="primary" onClick={()=>{window.location.href="/student"}}>Assignments</Button>
+    </div>}/>
+    <Button color="primary" id="button" onClick={()=>{window.location.href="/student"}}
+>Assignments</Button>
+    <canvas id = "canvas1"></canvas>
+</div>)
 
-    return(<canvas id = "canvas"></canvas>)
 }

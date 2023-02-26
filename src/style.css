@@ -17,6 +17,25 @@
     min-height: 100vh;
     z-index: -1;
 }
+#canvas1{
+    border: 2px solid black;
+    width: 99.5%;
+    height: 99.5%;
+    display:block;
+    box-sizing: border-box;
+    background-image: url("./routes/upload/background1.png");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    min-height: 100=vh;
+    z-index: -1;
+      overflow: hidden; /* Hide scrollbars */
+
+}
 #button{
     position: absolute;
     bottom: 90%;
