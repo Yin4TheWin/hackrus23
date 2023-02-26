@@ -15,6 +15,7 @@ import ClassView from './routes/ClassView';
 import BallsGame from './routes/BallsGame';
 import {firebase} from './firebase'
 import { getDatabase, ref, get } from "firebase/database";
+import SuperSoccer from './routes/SuperSoccer';
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,9 @@ const router = createBrowserRouter([
   }, {
     path: "play/broccoli/:username/:class/:quizId",
     element: <BallsGame/>
+  }, {
+    path: "play/soccer/:username/:class/:quizId",
+    element: <SuperSoccer/>
   }
 ]);
 
