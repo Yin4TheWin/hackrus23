@@ -5,9 +5,14 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
+
 import Root from './App'
 import Login from './routes/Login'
 import reportWebVitals from './reportWebVitals';
+import QuizView from './routes/QuizView';
+
+import {firebase} from './firebase'
+import { getDatabase, ref, get } from "firebase/database";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +30,18 @@ const router = createBrowserRouter([
     loader: async () => {
       return "Student";
     },
+  }, {
+    path: ":username/quiz/:quizId",
+    element: <QuizView/>,
+    loader: async ({params})=>{
+      const db = getDatabase(firebase);
+      const username=params.username?params.username.toLowerCase():"null"
+      const quizId=params.quizId?params.quizId.toLowerCase():"null"
+      const snapshot = await get(ref(db, 'users/'+username+'/quiz/'+quizId)).then(s=>{
+        return s.exists()?s.val():null
+      }).catch(()=>{return null})
+      return snapshot
+    }
   }
 ]);
 

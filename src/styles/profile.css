@@ -1,5 +1,6 @@
 .background-image{
   display: flex;
+  flex-direction: column;
   background-image: url("../teacherbg.png");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
@@ -10,4 +11,11 @@
 .profile-header {
     margin: 2%;
     font-size: calc(10px + 2vmin);
+  }
+
+  div.menu-buttons{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 2%;
   }
