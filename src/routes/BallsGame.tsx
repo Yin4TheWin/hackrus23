@@ -7,6 +7,7 @@ import ModalPopup from "../components/Modal";
 import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom'
 import '../style.css';
+import { deprecate } from 'util';
 
 
 export default function FishingGame(){
@@ -194,23 +195,23 @@ export default function FishingGame(){
     
 
     function moveMyImgLeft() {
-        myImgPos.x -= 25;
+        myImgPos.x -= 38;
 
     }
 
     function moveMyImgRight() {
-        myImgPos.x += 25;
+        myImgPos.x += 38;
 
     }
 
     document.addEventListener('keydown', function(e) {
         switch (e.key){
             case 'ArrowLeft' :
-                if(myImgPos.x - 25 < 0) break;
+                if(myImgPos.x - 38 < 0) break;
                 moveMyImgLeft();
                 break;
             case 'ArrowRight' :
-                if(myImgPos.x + 25 > canvas.width - canvas.width/10) break;
+                if(myImgPos.x + 38 > canvas.width - canvas.width/10) break;
                 moveMyImgRight();
                 break;
         }
