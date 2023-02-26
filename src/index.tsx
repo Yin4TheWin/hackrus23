@@ -8,6 +8,7 @@ import {
 
 import Root from './App'
 import Login from './routes/Login'
+import FishingGame from './routes/FishingGame';
 import reportWebVitals from './reportWebVitals';
 import QuizView from './routes/QuizView';
 
@@ -42,6 +43,9 @@ const router = createBrowserRouter([
       }).catch(()=>{return null})
       return snapshot
     }
+  }, {
+    path: "play/fishing/:username/:class/:quizId",
+    element: <FishingGame/>
   }
 ]);
 
