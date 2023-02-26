@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { get, ref, getDatabase } from 'firebase/database';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect, SetStateAction, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import {firebase} from '../firebase'
 import ModalPopup from "../components/Modal";
@@ -8,8 +8,10 @@ import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom'
 
 import '../style.css';
+import { updateNonNullChain } from 'typescript';
 
 export default function FishingGame(){
+    const firstUpdate=useRef(true)
     const db=getDatabase(firebase)
     const location=useLocation().pathname.split("/")
     const uid=location[3]
@@ -302,6 +304,13 @@ export default function FishingGame(){
             }).catch()
     }, []);
 
+    useEffect(()=>{
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+          } else if(!showGameOverModal)
+            window.location.href="/student"
+    }, [showGameOverModal])
+
     return(  <div>
                 <ModalPopup showModal={showGeneralModal} toggleModal={()=>{toggleGeneralModal(!showGeneralModal)}}
                 header={generalModalHeader} 
@@ -320,8 +329,7 @@ export default function FishingGame(){
                 footer = {<div>
                     <Button color="primary" onClick={()=>{window.location.href="/student"}}>Assignments</Button>
                 </div>}/>
-                <Button color="primary" id="button" onClick={()=>{window.location.href="/student"}}
->Assignments</Button>
+                <Button color="primary" id="button" onClick={()=>{window.location.href="/student"}}>Assignments</Button>
                 <canvas id = "canvas"></canvas>
             </div>)
 }
