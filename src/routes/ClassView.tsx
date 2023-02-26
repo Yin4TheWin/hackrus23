@@ -123,7 +123,7 @@ export default function ClassView(){
                         console.log(snapshot.val())
                         const updates: DatabaseUpdates={}
                         updates['users/'+username+'/class/'+classId+'/students/'+newStudent.replaceAll(".","%2E")]=Date.now()
-                        updates['users/'+snapshot.val()+'/classes/'+classId] = Date.now()
+                        updates['users/'+snapshot.val()+'/classes/'+classId] = username
                         update(ref(db), updates).then(()=>{
                             setNewStudent("")
                             generateModal("Student was Added", newStudent+" was successfully added to your class!")
@@ -165,7 +165,7 @@ export default function ClassView(){
         {
             students?Object.entries(students).map(list=>{
                 let key=list[0]
-                return (<tr>
+                return (<tr key={Math.random()*1000}>
                     <td>
                         {key.replaceAll("%2E", ".")}
                     </td>
@@ -227,7 +227,7 @@ export default function ClassView(){
         {
             assignments?Object.entries(assignments).map(list=>{
                 let key=list[0]
-                return (<tr>
+                return (<tr key={Math.random()*1000}>
                     <td>
                         {key.replaceAll("%2E", ".")}
                     </td>
