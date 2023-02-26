@@ -98,10 +98,6 @@ export default function StudentView({auth, user}:ProfileProps) {
             </Form>
         </>}/>
             <h1>Welcome back, {user?.displayName?.substring(0,user?.displayName?.lastIndexOf(" "))} 🧑‍🎓</h1>
-            <Button onClick={()=>{
-                signOut(auth).then(()=>{
-                    window.location.reload()})
-            }}>Sign Out</Button>
             <Table style={{marginTop: '1%'}} striped hover responsive="sm" size="sm">
               <thead>
                 <tr>
@@ -131,6 +127,12 @@ export default function StudentView({auth, user}:ProfileProps) {
                 }
               </tbody>
             </Table>
+            <div style={{display: 'flex', alignItems:'center', justifyContent:'center'}}>
+              <Button variant="danger" size="lg" onClick={()=>{
+                  signOut(auth).then(()=>{
+                      window.location.reload()})
+              }}>Sign Out</Button>
+            </div>
         </div>
     </div>
   );
