@@ -1,14 +1,15 @@
 .soccer-text {
-    color: white;
-    text-align: center;
+  color: white;
+  text-align: center;
 }
 
 .soccer-bg {
-    background-image: url("https://www.manpingou.com/uploads/allimg/190403/25-1Z40311291Q00.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100% 100%;
-    width: 100%;
-    height: 100vh;
-    margin: 0;
+  background-image: url("https://www.manpingou.com/uploads/allimg/190403/25-1Z40311291Q00.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
 }
