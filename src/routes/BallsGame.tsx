@@ -1,9 +1,25 @@
 //@ts-nocheck
+import { get, ref, getDatabase } from 'firebase/database';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import {firebase} from '../firebase'
+
 import '../style.css';
 
 export default function FishingGame(){
+    const db=getDatabase(firebase)
+    const location=useLocation().pathname.split("/")
+    const uid=location[3]
+    const className=decodeURI(location[4])
+    const quizName=decodeURI(location[5])
+
     useEffect(() => {
+        get(ref(db, "users/"+uid+"/classes/"+className)).then(teacherUID=>{
+            get(ref(db, "users/"+teacherUID.val()+"/quiz/"+quizName+"/questions")).then(questionRef=>{
+                let questions={}
+                if(questionRef.exists()){
+                    questions=questionRef.val()
+                }
     const canvas = document.querySelector("#canvas");
     const ctx = canvas.getContext('2d');
 
@@ -96,26 +112,6 @@ export default function FishingGame(){
         resp: ""
     }
 
-
-    //Questions
-    const questions = 
-    {
-        "what is 5 + 3?":
-        {
-            "10" : true,
-            "5" : false,
-            "11" : false,
-            "7" : false
-        },
-
-        "what is 3-2?" :
-        {
-            "10" : false,
-            "1" : true,
-            "3" : false,
-            "2" : false
-        }
-    }
 
     const questionList = shuffleArray(Object.keys(questions));
     //Populate list 
@@ -299,7 +295,7 @@ export default function FishingGame(){
         
     function shuffleArray(arr){
         return arr.sort((a,b)=> 0.5 - Math.random());
-    }
+    }})})
 },[]);
 
 

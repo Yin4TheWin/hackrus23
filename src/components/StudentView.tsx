@@ -80,7 +80,7 @@ export default function StudentView({auth, user}:ProfileProps) {
               type='radio'
               id='catch'
               name="group1"
-              label='Brocolli Quest'
+              label='Broccoli Quest'
               onChange={()=>{
                 setGameMode('broccoli')
               }}
