@@ -6,4 +6,21 @@
  
 #canvas {
     border: 2px solid black;
+    background-image: url("./routes/oceanImage.png");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    min-height: 100vh;
+    z-index: -1;
+}
+#button{
+    position: absolute;
+    bottom: 90%;
+    left: 90%;
+    width: 50;
+    height: 50;
 }

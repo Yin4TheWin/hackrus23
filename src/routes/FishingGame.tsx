@@ -1,8 +1,12 @@
 //@ts-nocheck
 import { get, ref, getDatabase } from 'firebase/database';
-import { useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { useLocation } from 'react-router-dom';
 import {firebase} from '../firebase'
+import ModalPopup from "../components/Modal";
+import Button from 'react-bootstrap/Button';
+import {Link} from 'react-router-dom'
+
 import '../style.css';
 
 export default function FishingGame(){
@@ -11,6 +15,12 @@ export default function FishingGame(){
     const uid=location[3]
     const className=decodeURI(location[4])
     const quizName=decodeURI(location[5])
+
+    const [showGeneralModal, toggleGeneralModal] = useState(false);
+    const [showGameOverModal, toggleGameOverModal] = useState(false);
+    const [generalModalText, setModalText] = useState("")
+    const [generalModalHeader, setModalHeader] = useState("")
+
     useEffect(() => {
             get(ref(db, "users/"+uid+"/classes/"+className)).then(teacherUID=>{
                 get(ref(db, "users/"+teacherUID.val()+"/quiz/"+quizName+"/questions")).then(questionRef=>{
@@ -101,6 +111,11 @@ export default function FishingGame(){
                             fish4.x = canvas.width/1.25;
                             fish4.y = canvas.height/1.5 + 150;
                         }
+                        else{
+                            clearInterval(timer);
+                            ctx.clearRect(0,0,canvas.width, canvas.height);
+                            toggleGameOverModal(true);
+                        }
                     }
                 
                     //dimensions
@@ -131,9 +146,19 @@ export default function FishingGame(){
                     }
                     fish2Image.src = require("./fish3.png");
                     //Velocity
-                    const fishVelocity = 2;
+                    const fishVelocity1 = 3.5;
+                    const fishVelocity2 = 6;
+                    const fishVelocity3 = 4.25;
                     let lineVelocity = 10;
-                    const timer = setInterval(fishLoop, 20);
+                    const timer = setInterval(fishLoop, 15);
+
+                    //Modal
+                    function generateModal(header: SetStateAction<string>, body: SetStateAction<string>){
+                        setModalHeader(header)
+                        setModalText(body)
+                        toggleGeneralModal(true)
+                    }
+
                     function fishLoop() {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         scaleToFill(background);
@@ -143,10 +168,10 @@ export default function FishingGame(){
                         ctx.fillText("Click to Fish!!", canvas.width/3, canvas.height/3)
                         if(!mouseClicked) ctx.drawImage(hook, canvas.width/3 - 50, 10);
                 
-                        fish1.x = (fish1.x + fishVelocity > canvas.width)? 0 - width : fish1.x + fishVelocity;
-                        fish2.x = (fish2.x + fishVelocity > canvas.width)? 0 - width : fish2.x + fishVelocity;
-                        fish3.x = (fish3.x - fishVelocity < 0 - width)? canvas.width : fish3.x - fishVelocity;
-                        fish4.x = (fish4.x - fishVelocity < 0 - width)? canvas.width : fish4.x - fishVelocity;  
+                        fish1.x = (fish1.x + fishVelocity1 > canvas.width)? 0 - width : fish1.x + fishVelocity1;
+                        fish2.x = (fish2.x + fishVelocity2 > canvas.width)? 0 - width : fish2.x + fishVelocity2;
+                        fish3.x = (fish3.x - fishVelocity3 < 0 - width)? canvas.width : fish3.x - fishVelocity3;
+                        fish4.x = (fish4.x - fishVelocity1 < 0 - width)? canvas.width : fish4.x - fishVelocity1;  
                         //display fish1:
                         createRect(fish1.x, fish1.y, width, height);
                         ctx.drawImage(fish1Image, fish1.x - 50, fish1.y - 40);
@@ -188,8 +213,10 @@ export default function FishingGame(){
                                 if(fish1.correctAnswer == true)
                                 {
                                     questionList.shift();
-                                    console.log(questionList);
+                                    //console.log(questionList);
+                                    generateModal("Great job!", "You selected the correct answer!!");
                                 }
+                                else  generateModal("Uh Oh", "Looks like that was wrong, try again!");
                                 rodEndY = 10;
                                 mouseClicked = false;
                                 populateObjects(fish1, fish2, fish3, fish4)
@@ -199,8 +226,9 @@ export default function FishingGame(){
                                 if(fish2.correctAnswer == true)
                                 {
                                     questionList.shift();
-                
+                                    generateModal("Great job!", "You selected the correct answer!!");
                                 }
+                                else  generateModal("Uh Oh", "Looks like that was wrong, try again!");                                
                                 rodEndY = 10;
                                 mouseClicked = false;
                                 populateObjects(fish1, fish2, fish3, fish4);
@@ -210,8 +238,9 @@ export default function FishingGame(){
                                 if(fish3.correctAnswer == true)
                                 {
                                     questionList.shift();
-                
+                                    generateModal("Great job!", "You selected the correct answer!!");
                                 }
+                                else  generateModal("Uh Oh", "Looks like that was wrong, try again!");
                                 rodEndY = 10;
                                 mouseClicked = false;
                                 populateObjects(fish1, fish2, fish3, fish4);
@@ -222,8 +251,9 @@ export default function FishingGame(){
                                 if(fish4.correctAnswer == true)
                                 {
                                     questionList.shift();
-                
+                                    generateModal("Great job!", "You selected the correct answer!!");
                                 }
+                                else  generateModal("Uh Oh", "Looks like that was wrong, try again!");
                                 rodEndY = 10;
                                 mouseClicked = false;
                                 populateObjects(fish1, fish2, fish3, fish4);
@@ -272,5 +302,26 @@ export default function FishingGame(){
             }).catch()
     }, []);
 
-    return(<canvas id = "canvas"></canvas>)
+    return(  <div>
+                <ModalPopup showModal={showGeneralModal} toggleModal={()=>{toggleGeneralModal(!showGeneralModal)}}
+                header={generalModalHeader} 
+                body={<div>
+                    <p>{generalModalText}</p>
+                </div>
+                }
+                footer={<div>
+                    <Button color="primary" onClick={()=>{toggleGeneralModal(!showGeneralModal)}}>OK</Button>
+                </div>
+                }/>
+                <ModalPopup showModal={showGameOverModal} toggleModal={()=>{toggleGameOverModal(!showGameOverModal)}}
+                header={"Game Over!"}
+                body={<div>
+                    <p>Great Job, You Have Finished the Quiz!</p></div>}
+                footer = {<div>
+                    <Button color="primary" onClick={()=>{window.location.href="/student"}}>Assignments</Button>
+                </div>}/>
+                <Button color="primary" id="button" onClick={()=>{window.location.href="/student"}}
+>Assignments</Button>
+                <canvas id = "canvas"></canvas>
+            </div>)
 }
