@@ -33,3 +33,9 @@
     text-align: center;
     height: 90vh;
   }
+
+  .top-buttons{
+    display: flex;
+    flex-direction: row;
+    align-self: center; 
+  }

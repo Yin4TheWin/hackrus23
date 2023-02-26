@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       const db = getDatabase(firebase);
       const username=params.username?params.username.toLowerCase():"null"
       const quizId=params.quizId?params.quizId.toLowerCase():"null"
-      const snapshot = await get(ref(db, 'users/'+username+'/quiz/'+quizId)).then(s=>{
+      const snapshot = await get(ref(db, 'users/'+username+'/quiz/'+quizId+'/questions')).then(s=>{
         return s.exists()?s.val():null
       }).catch(()=>{return null})
       return snapshot
