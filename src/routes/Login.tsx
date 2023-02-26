@@ -13,6 +13,7 @@ import { useLoaderData } from "react-router-dom";
 
 import TeacherView from "../components/TeacherView";
 import StudentView from "../components/StudentView";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default function Login(){
     const data = useLoaderData() as String;
@@ -29,7 +30,7 @@ export default function Login(){
     const [generalModalHeader, setModalHeader] = useState("")
 
     const [auth] = useState(getAuth(firebase));
-    // const [db] = useState(getDatabase(firebase)); 
+    const [db] = useState(getDatabase(firebase)); 
 
     const [displayName, setDisplayName] = useState("")
 
@@ -73,14 +74,16 @@ export default function Login(){
                         createUserWithEmailAndPassword(auth, email, password)
                         .then((userCredential) => {
                             const user=userCredential.user;
-                            updateProfile(user, {
-                                displayName: username+" "+data
-                            }).then(()=>{
-                                setDisplayName(username+" "+data)
-                                // set(ref(db, 'users/'+user.uid+'/type'), data)
-                            }).catch((error) => {
-                                const errorMessage = error.message;
-                                console.log(errorMessage)
+                            set(ref(db, "uids/"+user.email?.replaceAll(".","%2E")), user.uid).then(()=>{
+                                updateProfile(user, {
+                                    displayName: username+" "+data
+                                }).then(()=>{
+                                    setDisplayName(username+" "+data)
+                                    // set(ref(db, 'users/'+user.uid+'/type'), data)
+                                }).catch((error) => {
+                                    const errorMessage = error.message;
+                                    console.log(errorMessage)
+                                })
                             })
                         })
                         .catch((error) => {
