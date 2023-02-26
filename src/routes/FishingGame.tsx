@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import '../style.css';
 
 export default function FishingGame(){
-    useEffect(()=>{
-        window.addEventListener("load", () => {
+    useEffect(() => {
+            console.log("Hello!");
             const canvas = document.querySelector("#canvas");
         
             const ctx = canvas.getContext("2d");
@@ -26,10 +26,10 @@ export default function FishingGame(){
         
             //Background
             let background = new Image();
-            background.src = "oceanImage.png";
             background.onload = function(){
                 scaleToFill(this);
             }
+            background.src = require("./oceanImage.png");
         
             //fish objects
             const fish1 = 
@@ -87,6 +87,7 @@ export default function FishingGame(){
             populateObjects(fish1, fish2, fish3, fish4);
             function populateObjects(fish1, fish2, fish3, fish4){
                 if(questionList[0]){
+                    console.log("What's with the twitching?")
                     let answerList = shuffleArray(Object.keys(questions[questionList[0]]));
                     //console.log(answerList);
                     fish1.correctAnswer = questions[questionList[0]][answerList[0]];
@@ -106,12 +107,6 @@ export default function FishingGame(){
                     fish4.x = canvas.width/1.25;
                     fish4.y = canvas.height/1.5 + 150;
                 }
-                else {
-                    //end game
-                    console.log("game over!");
-                    ctx.clearRect(0, 0, canvas.width, canvas.height)
-                    clearInterval(timer);
-                }
             }
         
             //dimensions
@@ -125,22 +120,22 @@ export default function FishingGame(){
         
             //Images
             let hook = new Image();
-            hook.src = "hookImage2.png";
             hook.onload = function(){
                 ctx.drawImage(hook, canvas.width/3 - 50, 10);
             }
+            hook.src = require("./hookImage2.png");
             let fish1Image = new Image();
-            fish1Image.src = "fish1.png";
             fish1Image.onload = function(){
                 ctx.drawImage(fish1Image, fish1.x - 50, fish1.y- 40);
                 ctx.drawImage(fish1Image, fish2.x - 50, fish2.y- 40);
             }
+            fish1Image.src = require("./fish1.png");
             let fish2Image = new Image();
-            fish2Image.src = "fish3.png";
             fish2Image.onload = function(){
                 ctx.drawImage(fish2Image, fish3.x, fish3.y);
                 ctx.drawImage(fish2Image, fish4.x, fish4.y);
             }
+            fish2Image.src = require("./fish3.png");
             //Velocity
             const fishVelocity = 2;
             let lineVelocity = 10;
@@ -279,11 +274,8 @@ export default function FishingGame(){
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
               
-        
-        })
-    },[])
+    
+    }, []);
 
-
-    return(<canvas id = "canvas">
-    </canvas>)
+    return(<canvas id = "canvas"></canvas>)
 }

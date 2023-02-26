@@ -12,7 +12,7 @@ import FishingGame from './routes/FishingGame';
 import reportWebVitals from './reportWebVitals';
 import QuizView from './routes/QuizView';
 import ClassView from './routes/ClassView';
-
+import BallsGame from './routes/BallsGame';
 import {firebase} from './firebase'
 import { getDatabase, ref, get } from "firebase/database";
 
@@ -59,6 +59,9 @@ const router = createBrowserRouter([
   }, {
     path: "play/fishing/:username/:class/:quizId",
     element: <FishingGame/>
+  }, {
+    path: "play/broccoli/:username/:class/:quizId",
+    element: <BallsGame/>
   }
 ]);
 
@@ -66,9 +69,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
