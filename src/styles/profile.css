@@ -1,0 +1,13 @@
+.background-image{
+  display: flex;
+  background-image: url("../teacherbg.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.profile-header {
+    margin: 2%;
+    font-size: calc(10px + 2vmin);
+  }
