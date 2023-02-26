@@ -9,7 +9,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, se
 import ModalPopup from "../components/Modal";
 
 import '../styles/login.css'
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 import TeacherView from "../components/TeacherView";
 import StudentView from "../components/StudentView";
@@ -159,7 +159,8 @@ export default function Login(){
             }/>
             <h1>{data+" "+(loginState?"Log In":"Sign Up")}</h1>
             <p style={{textAlign:'center'}}>{loginState?"Don't have an account?":"Already have an account?"} <button className="link" onClick={() =>{ 
-                toggleLoginState(!loginState) }}>Click here</button> to {loginState?"sign up":"log in"}</p>  
+                toggleLoginState(!loginState) }}>Click here</button> to {loginState?"sign up":"log in"}</p> 
+                <Link to="/" style={{ color: 'black', fontSize: '20px'}} >(Or click here to go home)</Link>
             <Form onSubmit={(e)=>{
                     e.preventDefault()
                     handleAuthentication()  

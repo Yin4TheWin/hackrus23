@@ -3,7 +3,7 @@ import '../styles/profile.css'
 import { onValue, ref, getDatabase, update, get } from "firebase/database"
 import { SetStateAction, useEffect, useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
-import { useLoaderData, useParams } from "react-router-dom"
+import { Link, useLoaderData, useParams } from "react-router-dom"
 import { firebase } from "../firebase"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -112,7 +112,7 @@ export default function ClassView(){
             {classId}
         </h1>
         <p className="mini">
-            Now in Class Editing Mode
+            Now in Class Editing Mode (<Link to="/teacher" style={{ color: 'black'}} >Back to Dashboard</Link>)
         </p>
         <Form onSubmit={(e)=>{
         e.preventDefault()
